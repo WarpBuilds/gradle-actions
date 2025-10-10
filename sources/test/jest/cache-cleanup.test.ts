@@ -54,7 +54,7 @@ test('will cleanup unused gradle versions', async () => {
     const transforms3 = path.resolve(gradleUserHome, "caches/transforms-3")
     const metadata100 = path.resolve(gradleUserHome, "caches/modules-2/metadata-2.100")
     const wrapper802 = path.resolve(gradleUserHome, "wrapper/dists/gradle-8.0.2-bin")
-    const gradleCurrent = path.resolve(gradleUserHome, "caches/8.13")
+    const gradleCurrent = path.resolve(gradleUserHome, "caches/8.14.2")
     const metadataCurrent = path.resolve(gradleUserHome, "caches/modules-2/metadata-2.107")
 
     expect(fs.existsSync(gradle802)).toBe(true)
@@ -80,14 +80,14 @@ test('will cleanup unused gradle versions', async () => {
 })
 
 async function runGradleBuild(projectRoot: string, args: string, version: string = '3.1'): Promise<void> {
-    const status31 = await exec.exec(`gradle -g HOME --no-daemon --build-cache -Dcommons_math3_version="${version}" ${args}`, [], {
+    await exec.exec(`gradle -g HOME --no-daemon --build-cache -Dcommons_math3_version="${version}" ${args}`, [], {
         cwd: projectRoot
     })
     console.log(`Gradle User Home initialized with commons_math3_version=${version} ${args}`)
 }
 
 async function runGradleWrapperBuild(projectRoot: string, args: string, version: string = '3.1'): Promise<void> {
-    const status31 = await exec.exec(`./gradlew -g HOME --no-daemon --build-cache -Dcommons_math3_version="${version}" ${args}`, [], {
+    await exec.exec(`./gradlew -g HOME --no-daemon --build-cache -Dcommons_math3_version="${version}" ${args}`, [], {
         cwd: projectRoot
     })
     console.log(`Gradle User Home initialized with commons_math3_version="${version}" ${args}`)

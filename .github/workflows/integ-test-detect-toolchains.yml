@@ -30,7 +30,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - name: Checkout sources
-      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
     - name: Initialize integ-test
       uses: ./.github/actions/init-integ-test
 
@@ -46,7 +46,7 @@ jobs:
       shell: bash
       working-directory: .github/workflow-samples/groovy-dsl
       run: | 
-        grep -q 'Eclipse Temurin JDK 1.8' output.txt || (echo "::error::Did not detect preinstalled JDK 1.8" && exit 1)
+        grep -q 'Eclipse Temurin JDK 8' output.txt || (echo "::error::Did not detect preinstalled JDK 8" && exit 1)
         grep -q 'Eclipse Temurin JDK 11' output.txt || (echo "::error::Did not detect preinstalled JDK 11" && exit 1)
         grep -q 'Eclipse Temurin JDK 17' output.txt || (echo "::error::Did not detect preinstalled JDK 17" && exit 1)
         grep -q 'Eclipse Temurin JDK 21' output.txt || (echo "::error::Did not detect preinstalled JDK 21" && exit 1)
@@ -60,20 +60,20 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - name: Checkout sources
-      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
     - name: Initialize integ-test
       uses: ./.github/actions/init-integ-test
 
-    - name: Setup Java 20
-      uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4.7.0
-      with:
-        distribution: 'temurin'
-        java-version: 20
     - name: Setup Java 16
-      uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4.7.0
+      uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5.0.0
       with:
         distribution: 'temurin'
         java-version: 16
+    - name: Setup Java 20
+      uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5.0.0
+      with:
+        distribution: 'temurin'
+        java-version: 20
     - name: Setup Gradle
       uses: ./setup-gradle
     - name: List detected toolchains
@@ -92,7 +92,7 @@ jobs:
       shell: bash
       working-directory: .github/workflow-samples/groovy-dsl
       run: | 
-        grep -q 'Eclipse Temurin JDK 1.8' output.txt || (echo "::error::Did not detect preinstalled JDK 1.8" && exit 1)
+        grep -q 'Eclipse Temurin JDK 8' output.txt || (echo "::error::Did not detect preinstalled JDK 8" && exit 1)
         grep -q 'Eclipse Temurin JDK 11' output.txt || (echo "::error::Did not detect preinstalled JDK 11" && exit 1)
         grep -q 'Eclipse Temurin JDK 17' output.txt || (echo "::error::Did not detect preinstalled JDK 17" && exit 1)
         grep -q 'Eclipse Temurin JDK 21' output.txt || (echo "::error::Did not detect preinstalled JDK 21" && exit 1)

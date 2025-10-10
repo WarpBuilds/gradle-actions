@@ -6,5 +6,9 @@ module.exports = {
   transform: {
     '^.+\\.ts$': 'ts-jest'
   },
+  reporters: [
+      'default',
+      '@gradle-tech/develocity-agent/jest-reporter',
+  ],
   verbose: true
 }
