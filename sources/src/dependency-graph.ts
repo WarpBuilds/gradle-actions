@@ -3,7 +3,6 @@ import * as github from '@actions/github'
 import * as glob from '@actions/glob'
 import {DefaultArtifactClient} from '@actions/artifact'
 import {GitHub} from '@actions/github/lib/utils'
-import {RequestError} from '@octokit/request-error'
 import type {PullRequestEvent} from '@octokit/webhooks-types'
 
 import * as path from 'path'
@@ -41,6 +40,10 @@ export async function setup(config: DependencyGraphConfig): Promise<void> {
     maybeExportVariable('DEPENDENCY_GRAPH_INCLUDE_PROJECTS', config.getIncludeProjects())
     maybeExportVariable('DEPENDENCY_GRAPH_EXCLUDE_CONFIGURATIONS', config.getExcludeConfigurations())
     maybeExportVariable('DEPENDENCY_GRAPH_INCLUDE_CONFIGURATIONS', config.getIncludeConfigurations())
+
+    maybeExportVariable('GRADLE_PLUGIN_REPOSITORY_URL', config.getPluginRepository().getUrl())
+    maybeExportVariable('GRADLE_PLUGIN_REPOSITORY_USERNAME', config.getPluginRepository().getUsername())
+    maybeExportVariable('GRADLE_PLUGIN_REPOSITORY_PASSWORD', config.getPluginRepository().getPassword())
 }
 
 function maybeExportVariable(variableName: string, value: string | boolean | undefined): void {
@@ -191,7 +194,7 @@ async function submitDependencyGraphs(dependencyGraphFiles: string[]): Promise<v
         try {
             await submitDependencyGraphFile(dependencyGraphFile)
         } catch (error) {
-            if (error instanceof RequestError) {
+            if (error instanceof Error && error.name === 'HttpError') {
                 error.message = translateErrorMessage(dependencyGraphFile, error)
             }
             throw error
@@ -199,7 +202,7 @@ async function submitDependencyGraphs(dependencyGraphFiles: string[]): Promise<v
     }
 }
 
-function translateErrorMessage(jsonFile: string, error: RequestError): string {
+function translateErrorMessage(jsonFile: string, error: Error): string {
     const relativeJsonFile = getRelativePathFromWorkspace(jsonFile)
     const mainWarning = `Dependency submission failed for ${relativeJsonFile}.\n${error.message}`
     if (error.message === 'Resource not accessible by integration') {
