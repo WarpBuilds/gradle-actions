@@ -31,7 +31,7 @@ index 29aabbd..76724a9 100644
 +    constructor(key: string, size?: number);
 +}
 diff --git a/node_modules/@actions/cache/lib/cache.js b/node_modules/@actions/cache/lib/cache.js
-index af64009..62b28e3 100644
+index 3322963..30a3475 100644
 --- a/node_modules/@actions/cache/lib/cache.js
 +++ b/node_modules/@actions/cache/lib/cache.js
 @@ -121,6 +121,7 @@ function restoreCache(paths, primaryKey, restoreKeys, options, enableCrossOsArch
@@ -42,7 +42,7 @@ index af64009..62b28e3 100644
              switch (cacheEntry.provider) {
                  case 's3':
                  case 'r2': {
-@@ -141,7 +142,7 @@ function restoreCache(paths, primaryKey, restoreKeys, options, enableCrossOsArch
+@@ -142,7 +143,7 @@ function restoreCache(paths, primaryKey, restoreKeys, options, enableCrossOsArch
                      if (core.isDebug()) {
                          yield (0, tar_1.listTar)(archivePath, compressionMethod);
                      }
@@ -51,7 +51,7 @@ index af64009..62b28e3 100644
                      core.info(`Cache Size: ~${Math.round(archiveFileSize / (1024 * 1024))} MB (${archiveFileSize} B)`);
                      yield (0, tar_1.extractTar)(archivePath, compressionMethod);
                      core.info('Cache restored successfully');
-@@ -197,7 +198,7 @@ function restoreCache(paths, primaryKey, restoreKeys, options, enableCrossOsArch
+@@ -198,7 +199,7 @@ function restoreCache(paths, primaryKey, restoreKeys, options, enableCrossOsArch
                          if (core.isDebug()) {
                              yield (0, tar_1.listTar)(archivePath, compressionMethod);
                          }
@@ -60,7 +60,7 @@ index af64009..62b28e3 100644
                          core.info(`Cache Size: ~${Math.round(archiveFileSize / (1024 * 1024))} MB (${archiveFileSize} B)`);
                          yield (0, tar_1.extractTar)(archivePath, compressionMethod);
                      }
-@@ -222,14 +223,14 @@ function restoreCache(paths, primaryKey, restoreKeys, options, enableCrossOsArch
+@@ -223,14 +224,14 @@ function restoreCache(paths, primaryKey, restoreKeys, options, enableCrossOsArch
                      if (core.isDebug()) {
                          yield (0, tar_1.listTar)(archivePath, compressionMethod);
                      }
@@ -77,7 +77,7 @@ index af64009..62b28e3 100644
          }
          catch (error) {
              const typedError = error;
-@@ -278,6 +279,7 @@ function saveCache(paths, key, enableCrossOsArchive = false, enableCrossArchArch
+@@ -279,6 +280,7 @@ function saveCache(paths, key, enableCrossOsArchive = false, enableCrossArchArch
          }
          const archiveFolder = yield utils.createTempDirectory();
          const archivePath = path.join(archiveFolder, utils.getCacheFileName(compressionMethod));
@@ -85,7 +85,7 @@ index af64009..62b28e3 100644
          core.debug(`Archive Path: ${archivePath}`);
          try {
              yield (0, tar_1.createTar)(archiveFolder, cachePaths, compressionMethod);
-@@ -285,7 +287,7 @@ function saveCache(paths, key, enableCrossOsArchive = false, enableCrossArchArch
+@@ -286,7 +288,7 @@ function saveCache(paths, key, enableCrossOsArchive = false, enableCrossArchArch
                  yield (0, tar_1.listTar)(archivePath, compressionMethod);
              }
              const fileSizeLimit = 1000 * 1024 * 1024 * 1024; // 1000GB per repo limit
@@ -94,7 +94,7 @@ index af64009..62b28e3 100644
              core.debug(`File Size: ${archiveFileSize}`);
              if (archiveFileSize > fileSizeLimit) {
                  throw new Error(`Cache size of ~${Math.round(archiveFileSize / (1024 * 1024))} MB (${archiveFileSize} B) is over the 1000GB limit, not saving cache.`);
-@@ -348,7 +350,7 @@ function saveCache(paths, key, enableCrossOsArchive = false, enableCrossArchArch
+@@ -349,7 +351,7 @@ function saveCache(paths, key, enableCrossOsArchive = false, enableCrossArchArch
                  core.debug(`Failed to delete archive: ${error}`);
              }
          }
@@ -103,7 +103,7 @@ index af64009..62b28e3 100644
      });
  }
  exports.saveCache = saveCache;
-@@ -372,4 +374,10 @@ function deleteCache(paths, key, enableCrossOsArchive = false, enableCrossArchAr
+@@ -373,4 +375,10 @@ function deleteCache(paths, key, enableCrossOsArchive = false, enableCrossArchAr
      });
  }
  exports.deleteCache = deleteCache;
