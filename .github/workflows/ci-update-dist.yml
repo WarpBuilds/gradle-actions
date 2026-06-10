@@ -23,21 +23,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       with:
         token: ${{ secrets.BOT_GITHUB_TOKEN }}
 
     - name: Set up Node.js
-      uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+      uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
       with:
         node-version: 20
         cache: npm
         cache-dependency-path: sources/package-lock.json
 
+    - name: Install Develocity npm agent
+      run: |
+        npm exec -y -- pacote extract @gradle-tech/develocity-agent@3.0.1 ~/.node_libraries/@gradle-tech/develocity-agent
+
     - name: Install npm dependencies
       run: |
         npm clean-install
       working-directory: sources
+      env:
+        NODE_OPTIONS: '-r @gradle-tech/develocity-agent/preload'
+        DEVELOCITY_ACCESS_KEY: '${{ secrets.DV_SOLUTIONS_ACCESS_KEY }}'
 
     - name: Build distribution
       run: |
@@ -66,7 +73,7 @@ jobs:
     # Important: The push event will not trigger any other workflows, see
     # https://github.com/stefanzweifel/git-auto-commit-action?tab=readme-ov-file#commits-made-by-this-action-do-not-trigger-new-workflow-runs
     - name: Commit & push changes
-      uses: stefanzweifel/git-auto-commit-action@778341af668090896ca464160c2def5d1d1a3eb0 # v6.0.1
+      uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
       with:
         commit_author: bot-githubaction <bot-githubaction@gradle.com>
         commit_user_name: bot-githubaction
